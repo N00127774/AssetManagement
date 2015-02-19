@@ -5,8 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-
-    private static Connection sConnection;
+private static Connection sConnection;
 
     public static Connection getInstance() throws ClassNotFoundException, SQLException {
         String host, db, user, password;
@@ -27,6 +26,8 @@ public class DBConnection {
             sConnection = DriverManager.getConnection(url, user, password);
         }
 
+        
+        //this is a new message for testing
         return sConnection;
     }
 
