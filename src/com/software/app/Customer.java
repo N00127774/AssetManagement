@@ -11,22 +11,24 @@ public class Customer {
     private String address;
     private String dateRegistered;
     private int customerID;
+    private int branchID;
 
     //Constructor
-    public Customer(String nm, String e, String m, String a, String d, int cId) {
+    public Customer(String nm, String e, String m, String a, String d, int cId,int bId) {
         this.name = nm;
         this.email = e;
         this.mobileNumber = m;
         this.address = a;
         this.dateRegistered = d;
         this.customerID = cId;
+        this.branchID=bId;
 
     }
 
     //Second Constructor with default ID
 
-    public Customer(String nm, String e, String m, String a, String d) {
-        this(nm, e, m, a, d, -1);
+    public Customer(String nm, String e, String m, String a, String d, int bId) {
+        this(nm, e, m, a, d, -1,bId);
     }
 
     //Get and Set mehods.
@@ -78,4 +80,13 @@ public class Customer {
         this.customerID = customerID;
     }
 
+    public int getBranchID(){
+        return branchID;
+    }
+    
+    public void setBranchID(){
+        this.branchID = branchID;
+    }
+    
+    
 }
