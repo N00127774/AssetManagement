@@ -1,3 +1,4 @@
+
 package com.software.app;
 
 import java.util.List;
@@ -16,7 +17,13 @@ public class MainApp {
             System.out.println("2. Delete existing Customers");
             System.out.println("3. Edit existing Customers");
             System.out.println("4. View all Customers");
-            System.out.println("5. Exit");
+            System.out.println();
+            System.out.println("5. Create new Branch");
+            System.out.println("6. Delete existing Branch");
+            System.out.println("7. Edit existing Branch");
+            System.out.println("8. View all Branches");
+            System.out.println();
+            System.out.println("9. Exit");
             System.out.println();
 
             //User Input(Int) When you input a number it prints out the number you input.
@@ -53,6 +60,33 @@ public class MainApp {
                     break;
 
                 }
+                
+                
+                case 5: {
+                    System.out.println("Creating branches");
+                    createBranch(keyboard, model);
+                    break;
+                }
+
+                case 6: {
+                    System.out.println("Deleting branches");
+                    deleteBranch(keyboard, model);
+                    break;
+                }
+
+                case 7: {
+                    System.out.println("Editing branches");
+                    editBranch(keyboard, model);
+                    break;
+
+                }
+                case 8: {
+                    System.out.println("Viewing branches");
+                    viewBranchs(model);
+                    break;
+
+                }
+                
             }
         } //This is the while Loop, this loop keeps going unless the number 4 as been enterened,
         //When the digit number four as been entered, the exit option is selected.
@@ -213,4 +247,175 @@ public class MainApp {
             c.setCustomerID(customerId);
         }
     }
+    
+        private static void createBranch(Scanner keyb, Model mdll) {
+        //keyboard created
+        Branch c = readBranch(keyb);
+
+        // if statement for if the customr as been added or not
+        if (mdll.addBranch(c)) {
+            System.out.println("Branch added to database.");
+        } else {
+            System.out.println("Branch not added to database.");
+        }
+        System.out.println();
+    }
+
+    private static void deleteBranch(Scanner keyboard, Model model) {
+        System.out.println("Enter the BranchID of the branch to delete");
+        int branchId = Integer.parseInt(keyboard.nextLine());
+        Branch c;
+
+        c = model.findBranchByBranchID(branchId);
+        if (c != null) {
+            if (model.removeBranch(c)) {
+                System.out.println("Branch deleted");
+            } else {
+                System.out.println("Branch not deleted");
+            }
+        } else {
+            System.out.println("Branch not found");
+        }
+    }
+
+    private static void editBranch(Scanner kb, Model m) {
+        System.out.print("Enter the branchID of the branch to edit:");
+        int branchId = Integer.parseInt(kb.nextLine());
+        Branch c;
+
+        c = m.findBranchByBranchID(branchId);
+        if (c != null) {
+            editBranchDetails(kb, c);
+            if (m.updateBranch(c)) {
+                System.out.println("Branch updated");
+
+            } else {
+                System.out.println("Branch not updated");
+            }
+        } else {
+            System.out.println("Branch not found");
+        }
+    }
+
+    //different variable from the one in the BranchTableGateway   
+
+    private static void viewBranchs(Model model) {
+        List<Branch> branchs = model.getBranchs();
+        System.out.println();
+        if (branchs.isEmpty()) {
+            System.out.println("There are no branchs in the database");
+        } else {
+            System.out.printf("%-25s %-20s %18s %50s %25s %15s\n", "Name", "email", "MobileNumber", " Address ", " DateRegistered ", "BranchID");
+            for (Branch cr : branchs) {
+                System.out.printf("%-25s %-20s %18s %50s %25s  %15d\n",
+                        cr.getName(),
+                        cr.getEmail(),
+                        cr.getMobileNumber(),
+                        cr.getAddress(),
+                        cr.getDateRegistered(),
+                        cr.getBranchID());
+            }
+                           // The if statement prints out if there are no branch in database, 
+            // The cr is a variable that stores the branchs objects inside.
+
+        }
+        System.out.println();
+
+    }
+
+    private static Branch readBranch(Scanner keyb) {
+        String name, email, mobileNumber, address, dateRegistered;
+        int branchId;
+        String line;
+            // the do while loop prints out the statement repeatedly if there are no input in the frequired fields.
+            //if the length of input =0 it qill print out the message again till there's something inserted.
+        do {
+            name = getString(keyb, "Enter name:");
+        } while (name.length() == 0);
+
+        do {
+            email = getString(keyb, "Enter email:");
+        } while (email.length() == 0);
+
+        do {
+            mobileNumber = getString(keyb, "Enter MobileNumber:");
+        } while (mobileNumber.length() == 0);
+
+        do {
+            address = getString(keyb, "Enter Address:");
+        } while (address.length() == 0);
+
+        do {
+            dateRegistered = getString(keyb, "Enter Date Registered:");
+        } while (dateRegistered.length() == 0);
+
+            //this do while loop will continue to ask user to input something
+        //becuase the  fileds cannot be empty due to the settings on mySQL database.
+    //reading in the input for branch ID
+    //branchId STORES THE INPUT FROM KEYBOARD, INT, into the branchID.
+        Branch c
+                = new Branch(name, email, mobileNumber,
+                        address, dateRegistered);
+
+        return c;
+    }
+
+    private static String getString(Scanner keyboard, String prompt) {
+        System.out.println(prompt);
+        return keyboard.nextLine();
+    }
+
+    private static void editBranchDetails(Scanner keyb, Branch c) {
+        String name, email, mobileNumber, address, dateRegistered;
+        int branchId;
+        String line1;
+
+        name = getString(keyb, "Enter name[ " + c.getName() + "]:");
+        email = getString(keyb, "Enter email[" + c.getEmail() + "]:");
+        mobileNumber = getString(keyb, "Enter Mobile Number" + c.getMobileNumber() + "]:");
+        address = getString(keyb, "Enter Address" + c.getAddress() + "]:");
+        dateRegistered = getString(keyb, "Enter Date Registered" + c.getDateRegistered() + "]:");
+        line1 = getString(keyb, "Enter Branch ID [" + c.getBranchID() + "]: ");
+
+        if (name.length() != 0) {
+            c.setName(name);
+        }
+        if (email.length() != 0) {
+            c.setEmail(email);
+        }
+
+        if (mobileNumber.length() != 0) {
+            c.setMobileNumber(mobileNumber);
+        }
+
+        if (address.length() != 0) {
+            c.setAddress(address);
+        }
+
+        if (dateRegistered.length() != 0) {
+            c.setDateRegistered(dateRegistered);
+        }
+
+        if (line1.length() != 0) {
+            branchID = Integer.parseInt(line1);
+            c.setBranchID(branchID);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
