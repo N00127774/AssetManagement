@@ -3,7 +3,7 @@ package com.software.app;
 //Customer Class
 public class Customer {
 
-    //declaring the attributes
+    //declaring the attribute
 
     private String name;
     private String email;
