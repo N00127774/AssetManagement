@@ -84,7 +84,7 @@ public class Customer {
         return branchID;
     }
     
-    public void setBranchID(){
+    public void setBranchID(int branchID){
         this.branchID = branchID;
     }
     

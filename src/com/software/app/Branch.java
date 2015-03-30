@@ -35,11 +35,11 @@ public class Branch {
     return number; 
  }
  
- public String OpeningHours(){
+ public String getOpeningHours(){
      return openingHours;
  }
  
- public String ManagerName(){
+ public String getManagerName(){
      return managerName;
  }
  

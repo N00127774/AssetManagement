@@ -25,12 +25,13 @@ public class CustomerTableGateway {
     private static final String COLUMN_ADDRESS = "address";
     private static final String COLUMN_DATEREGISTERED = "dateRegistered";
     private static final String COLUMN_CUSTOMERID = "customerId";
+    private static final String COLUMN_BRANCHID =  "branchID";
 
     public CustomerTableGateway(Connection connection) {
         mConnection = connection;
     }
 
-    public int insertCustomer(String n, String e, String m, String a, String d) throws SQLException {
+    public int insertCustomer(String n, String e, String m, String a, String d, int bId) throws SQLException {
         String query;
         PreparedStatement stmt;
         int numRowsAffected;
@@ -42,8 +43,9 @@ public class CustomerTableGateway {
                 + COLUMN_EMAIL + ", "
                 + COLUMN_MOBILE + ", "
                 + COLUMN_ADDRESS + ", "
-                + COLUMN_DATEREGISTERED
-                + ")VALUES (?, ?, ?, ?, ?)";
+                + COLUMN_DATEREGISTERED + ", " 
+                + COLUMN_BRANCHID +
+                 ")VALUES (?, ?, ?, ?, ?, ?)";
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         try {
@@ -58,7 +60,17 @@ public class CustomerTableGateway {
         stmt.setString(3, m);
         stmt.setString(4, a);
         stmt.setDate(5, date);
-
+        //gettin an int
+        stmt.setInt (6, bId);
+        
+        if (bId == -1) {
+            stmt.setNull(6, java.sql.Types.INTEGER);
+        }
+        
+        else {
+            stmt.setInt(6, bId);
+        }
+        
         numRowsAffected = stmt.executeUpdate();
         if (numRowsAffected == 1) {
             //if one row was inserted,retrieve the id assigned to that row
@@ -101,7 +113,7 @@ public class CustomerTableGateway {
         // the id of a customer
 
         String name, email, mobileNumber, address, dateRegistered;
-        int customerId;
+        int customerId, branchID;
         Customer c;       // a Customer object created from a row in the result of
         // the query
 
@@ -123,8 +135,13 @@ public class CustomerTableGateway {
             address = rs.getString(COLUMN_ADDRESS);
             dateRegistered = rs.getString(COLUMN_DATEREGISTERED);
             customerId = rs.getInt(COLUMN_CUSTOMERID);
+            branchID= rs.getInt(COLUMN_BRANCHID);
 
-            c = new Customer(name, email, mobileNumber, address, dateRegistered, customerId);
+            if (rs.wasNull()) {
+                branchID = -1;
+            }
+            
+            c = new Customer(name, email, mobileNumber, address, dateRegistered, customerId, branchID);
             customers.add(c);
         }
 
@@ -135,6 +152,7 @@ public class CustomerTableGateway {
         String query;  //the SQL query excute
         PreparedStatement stmt;
         int numRowsAffected;
+        int bId;
 
         //the required SQL INSERT statement place holders for the values to be inserted into the database
         query = " UPDATE " + TABLE_NAME + " SET "
@@ -142,7 +160,8 @@ public class CustomerTableGateway {
                 + COLUMN_EMAIL + "=?, "
                 + COLUMN_MOBILE + "=?, "
                 + COLUMN_ADDRESS + "=?, "
-                + COLUMN_DATEREGISTERED + "=? "
+                + COLUMN_DATEREGISTERED + "=?, "
+                + COLUMN_BRANCHID + "=? "
                 + " WHERE " + COLUMN_CUSTOMERID + " = ?";
 
         //create a PreparedStatment object to excute the query and insert the new valuies into the query
@@ -152,8 +171,18 @@ public class CustomerTableGateway {
         stmt.setString(3, c.getMobileNumber());
         stmt.setString(4, c.getAddress());
         stmt.setString(5, c.getDateRegistered());
-        stmt.setInt(6, c.getCustomerID());
-
+        stmt.setInt(7, c.getCustomerID());
+        stmt.setInt(6, c.getBranchID());
+        bId = c.getBranchID();
+        
+        if (bId == -1) {
+            stmt.setNull(6,  java.sql.Types.INTEGER);
+        }
+        
+        else {
+            stmt.setInt(6, bId);
+        }
+        stmt.setInt(7, c.getCustomerID());
         // excute the query
         numRowsAffected = stmt.executeUpdate();
 
