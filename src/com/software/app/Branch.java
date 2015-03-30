@@ -32,7 +32,7 @@ public class Branch {
  }
  
  public String getNumber(){
-    return number; 
+    return  number; 
  }
  
  public String getOpeningHours(){
