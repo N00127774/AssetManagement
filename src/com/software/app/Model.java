@@ -20,14 +20,19 @@ public class Model {
     //loads up the list class
     List<Customer> customers;
     CustomerTableGateway gateway;
+    
+    List<Branch> branches;
+    BranchTableGateway branchGateway;
 
     // the model class is private so it wont be accessed anywhere else.
     private Model() {
         try {
             Connection conn = DBConnection.getInstance();
             this.gateway = new CustomerTableGateway(conn);
+            this. branchGateway = new BranchTableGateway(conn);
 
-            this.customers = this.gateway.getCustomers();
+         this.customers = this.gateway.getCustomers();
+         this.branches = this.branchGateway.getBranches();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -39,7 +44,7 @@ public class Model {
         boolean result = false;
         try {
             // The gateway returns an id and then the  get method is called to insert value in the parameter.
-            int id = this.gateway.insertCustomer(c.getName(), c.getEmail(), c.getMobileNumber(), c.getAddress(), c.getDateRegistered());
+            int id = this.gateway.insertCustomer(c.getName(), c.getEmail(), c.getMobileNumber(), c.getAddress(), c.getDateRegistered(), c.getBranchID());
             //if statement works if the id is not equal to -1 and then  the boolean wil be true.
             if (id != -1) {
                 c.setCustomerID(id);
@@ -102,4 +107,91 @@ public class Model {
 
         return updated;
     }
+
+
+
+   public boolean addBranch(Branch b) {
+        boolean result = false;
+        try {                                   
+            // The gateway returns an id and then the  get method is called to insert value in the parameter.
+            int id = this.branchGateway.insertBranch(b.getAddress(), b.getNumber(), b.getOpeningHours(),  b.getManagerName());
+            //if statement works if the id is not equal to -1 and then  the boolean wil be true.
+            if (id != -1) {
+                b.setBranchID(id);
+                this.branches.add(b);
+                result = true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+   
+      public boolean removeBranch(Branch b) {
+        boolean removed = false;
+
+        try {
+            // removes the customer in the database with this customerid stated
+            removed = this.branchGateway.deleteBranch(b.getBranchID());
+            if (removed) {
+                removed = this.branches.remove(b);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return removed;
+    }
+
+
+      public List<Branch>getBranches() {
+        return this.branches;
+    }
+      
+      
+       Branch findBranchByBranchID (int branchID) {
+        Branch b = null;
+        int i = 0;
+        boolean found = false;
+        while (i < this.branches.size() && !found) {
+            b = this.branches.get(i);
+            if (b.getBranchID() == branchID) {
+                found = true;
+            } else {
+                i++;
+
+            }
+        }
+        if (!found) {
+            b = null;
+        }
+        return b;
+    }
+       
+       
+        boolean updateBranch(Branch b) {
+        boolean updated = false;
+
+        try {
+            updated = this.branchGateway.updateBranch(b);
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return updated;
+    }
+       
+       
+
+
+
+
+
+
+
+
+
 }
+
+    
