@@ -18,8 +18,11 @@ public class MainApp {
             System.out.println("4. View all Customers");
             System.out.println();
             System.out.println("5. Create new Branch");
+            System.out.println();
             System.out.println("6. Delete existing Branch");
+            System.out.println();
             System.out.println("7. Edit existing Branch");
+            System.out.println();
             System.out.println("8. View all Branches");
             System.out.println();
             System.out.println("9. Exit");
@@ -29,7 +32,7 @@ public class MainApp {
             System.out.print("Enter option: ");
             String line = keyboard.nextLine();
             opt = Integer.parseInt(line);
-
+            System.out.println();
             System.out.println("You chose option " + opt);
 
         // The swtich statement= If statement.the follwing cases, print out different
@@ -107,6 +110,8 @@ public class MainApp {
     }
 
     private static void deleteCustomer(Scanner keyboard, Model model) {
+        try// open  making sure Number is input inside the field instead of words.
+        {
         System.out.println("Enter the CustomerID of the customer to delete");
         int customerId = Integer.parseInt(keyboard.nextLine());
         Customer c;
@@ -114,6 +119,7 @@ public class MainApp {
         c = model.findCustomerByCustomerID(customerId);
         if (c != null) {
             if (model.removeCustomer(c)) {
+                  System.out.println();
                 System.out.println("Customer deleted");
             } else {
                 System.out.println("Customer not deleted");
@@ -121,9 +127,17 @@ public class MainApp {
         } else {
             System.out.println("Customer not found");
         }
+        }
+        catch(NumberFormatException e)
+        {
+            System.out.println();// making sure Number is input inside the field instead of words.
+            System.out.println("Number format exception: " + e.getMessage());
+            System.out.println();
+        }
     }
 
     private static void editCustomer(Scanner kb, Model m) {
+        try{
         System.out.print("Enter the customerID of the customer to edit:");
         int customerId = Integer.parseInt(kb.nextLine());
         Customer c;
@@ -139,6 +153,14 @@ public class MainApp {
             }
         } else {
             System.out.println("Customer not found");
+        }
+        }
+        catch(NumberFormatException e)
+        {
+            System.out.println();// making sure Number is input inside the field instead of words.
+            System.out.println("Number format exception: " + e.getMessage());
+            System.out.println();
+        
         }
     }
 
@@ -268,6 +290,7 @@ public class MainApp {
     }
 
     private static void deleteBranch(Scanner keyboard, Model model) {
+        try{
         System.out.println("Enter the BranchID of the branch to delete");
         int branchID = Integer.parseInt(keyboard.nextLine());
         Branch b;
@@ -282,9 +305,19 @@ public class MainApp {
         } else {
             System.out.println("Branch not found");
         }
+        }
+       catch(NumberFormatException e)
+       {
+            System.out.println();// making sure Number is input inside the field instead of words.
+            System.out.println("Number format exception: " + e.getMessage());
+            System.out.println();
+       }
+        
     }
 
     private static void editBranch(Scanner kb, Model m) {
+        try{
+        System.out.println();  
         System.out.print("Enter the branchID of the branch to edit:");
         int branchID = Integer.parseInt(kb.nextLine());
         Branch b;
@@ -301,6 +334,16 @@ public class MainApp {
         } else {
             System.out.println("Branch not found");
         }
+        }
+        
+         catch(NumberFormatException e)
+       {
+            System.out.println();// making sure Number is input inside the field instead of words.
+            System.out.println("Number format exception: " + e.getMessage());
+            System.out.println();
+       }
+        
+        
     }
 
     //different variable from the one in the BranchTableGateway   
