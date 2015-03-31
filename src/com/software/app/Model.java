@@ -29,7 +29,7 @@ public class Model {
         try {
             Connection conn = DBConnection.getInstance();
             this.gateway = new CustomerTableGateway(conn);
-            this. branchGateway = new BranchTableGateway(conn);
+            this.branchGateway = new BranchTableGateway(conn);
 
          this.customers = this.gateway.getCustomers();
          this.branches = this.branchGateway.getBranches();

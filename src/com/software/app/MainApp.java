@@ -13,7 +13,7 @@ public class MainApp {
         do {
             // Different Options(Menu)Building up the Menu interface
             System.out.println("1. Create new Customer");
-            System.out.println("2. Deleteikkk existing Customers");
+            System.out.println("2. Delete existing Customers");
             System.out.println("3. Edit existing Customers");
             System.out.println("4. View all Customers");
             System.out.println();

@@ -10,11 +10,11 @@ public class Branch {
  
  public Branch(int bId, String a, String n, String o, String mn){
  
-  this.branchID=bId;
-  this.address=a;
-  this.number=n;
-  this.openingHours=o;
-  this.managerName=mn;
+  this.branchID = bId;
+  this.address = a;
+  this.number = n;
+  this.openingHours = o;
+  this.managerName = mn;
 
 }
  

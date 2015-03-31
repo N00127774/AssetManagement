@@ -141,7 +141,7 @@ public class CustomerTableGateway {
                 branchID = -1;
             }
             
-            c = new Customer(name, email, mobileNumber, address, dateRegistered, customerId, branchID);
+            c = new Customer(name, email, mobileNumber, address, dateRegistered, branchID);
             customers.add(c);
         }
 
