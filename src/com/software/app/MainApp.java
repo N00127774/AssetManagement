@@ -1,102 +1,138 @@
 package com.software.app;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class MainApp {
-
+    
+    private static final int NAME_ORDER = 1;
+    private static final int CUSTOMERID_ORDER = 2;
+    
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
-        Model model = Model.getInstance();
-        int opt;
+        Model model;
+        int opt = 12;
 
         do {
+            try{
+             model = Model.getInstance();
             // Different Options(Menu)Building up the Menu interface
-            System.out.println("1. Create new Customer");
-            System.out.println("2. Delete existing Customers");
-            System.out.println("3. Edit existing Customers");
-            System.out.println("4. View all Customers");
-            System.out.println();
-            System.out.println("5. Create new Branch");
-            System.out.println();
-            System.out.println("6. Delete existing Branch");
-            System.out.println();
-            System.out.println("7. Edit existing Branch");
-            System.out.println();
-            System.out.println("8. View all Branches");
-            System.out.println();
-            System.out.println("9. Exit");
-            System.out.println();
+                System.out.println(" 1. Create new Customer");
+                System.out.println(" 2. Delete existing Customers");
+                System.out.println(" 3. Edit existing Customers");
+                System.out.println(" 4. View all Customers");
+                System.out.println(" 5. View all Customers by Customer Id");
+                System.out.println(" 6. View single Customer");
+                System.out.println();
+                System.out.println(" 7. Create new Branch");
+                System.out.println();
+                System.out.println(" 8. Delete existing Branch");
+                System.out.println();
+                System.out.println(" 9. Edit existing Branch");
+                System.out.println();
+                System.out.println(" 10. View all Branches");
+                System.out.println(" 11. View single Branch");
+                System.out.println();
+                System.out.println(" 12. Exit");
+                System.out.println();
 
-            //User Input(Int) When you input a number it prints out the number you input.
-            System.out.print("Enter option: ");
-            String line = keyboard.nextLine();
-            opt = Integer.parseInt(line);
-            System.out.println();
-            System.out.println("You chose option " + opt);
+                //User Input(Int) When you input a number it prints out the number you input.
 
-        // The swtich statement= If statement.the follwing cases, print out different
-            //statements, depending on the number you input in.
-            switch (opt) {
-                case 1: {
-                    System.out.println("Creating Customer");
-                    createCustomer(keyboard, model);
-                    break;
+                opt = getInt(keyboard, "Enter option: " , 12);
+                System.out.println();
+                System.out.println("You chose option " + opt);
+
+            // The swtich statement= If statement.the follwing cases, print out different
+                //statements, depending on the number you input in.
+                switch (opt) {
+                    case 1: {
+                        System.out.println("Creating Customer");
+                        createCustomer(keyboard, model);
+                        break;
+                    }
+
+                    case 2: {
+                        System.out.println("Deleting Customer");
+                        deleteCustomer(keyboard, model);
+                        break;
+                    }
+
+                    case 3: {
+                        System.out.println("Editing Customers");
+                        editCustomer(keyboard, model);
+                        break;
+
+                    }
+                    case 4: {
+                        System.out.println("Viewing Customers");
+                        viewCustomers(model, NAME_ORDER);
+                        break;
+
+                    }
+                    
+                    case 5: {
+                        System.out.println("Viewing Customers");
+                        viewCustomers(model, CUSTOMERID_ORDER);
+                        break;
+
+                    }
+                    case 6: {
+                        System.out.println("Viewing single Customer");
+                        viewCustomer(keyboard, model);
+                        break;
+
+                    }
+
+
+                    case 7: {
+                        System.out.println("Creating branch");
+                        createBranch(keyboard, model);
+                        break;
+                    }
+
+                    case 8: {
+                        System.out.println("Deleting branches");
+                        deleteBranch(keyboard, model);
+                        break;
+                    }
+
+                    case 9: {
+                        System.out.println("Editing branches");
+                        editBranch(keyboard, model);
+                        break;
+
+                    }
+                    case 10: {
+                        System.out.println("Viewing branches");
+                        viewBranchs(model);
+                        break;
+
+                    }
+                    
+                    case 11: {
+                        System.out.println("Viewing branch");
+                        viewBranch(keyboard,model);
+                        break;
+
+                    }
+
                 }
-
-                case 2: {
-                    System.out.println("Deleting Customer");
-                    deleteCustomer(keyboard, model);
-                    break;
-                }
-
-                case 3: {
-                    System.out.println("Editing Customers");
-                    editCustomer(keyboard, model);
-                    break;
-
-                }
-                case 4: {
-                    System.out.println("Viewing Customers");
-                    viewCustomers(model);
-                    break;
-
-                }
-                
-                
-                case 5: {
-                    System.out.println("Creating branches");
-                    createBranch(keyboard, model);
-                    break;
-                }
-
-                case 6: {
-                    System.out.println("Deleting branches");
-                    deleteBranch(keyboard, model);
-                    break;
-                }
-
-                case 7: {
-                    System.out.println("Editing branches");
-                    editBranch(keyboard, model);
-                    break;
-
-                }
-                case 8: {
-                    System.out.println("Viewing branches");
-                    viewBranchs(model);
-                    break;
-
-                }
-                
             }
+            catch (DataAccessException e){
+              System.out.println();
+              System.out.println(e.getMessage());
+              System.out.println();
+            }
+                    
         } //This is the while Loop, this loop keeps going unless the number 4 as been enterened,
         //When the digit number four as been entered, the exit option is selected.
         //This is the second step after I have the Menu part done printing out the messages.    
-        while (opt != 9);
+        while (opt != 12);
     }
 
-    private static void createCustomer(Scanner keyb, Model mdll) {
+    private static void createCustomer(Scanner keyb, Model mdll) throws DataAccessException {
         //keyboard created
         Customer c = readCustomer(keyb);
 
@@ -109,11 +145,8 @@ public class MainApp {
         System.out.println();
     }
 
-    private static void deleteCustomer(Scanner keyboard, Model model) {
-        try// open  making sure Number is input inside the field instead of words.
-        {
-        System.out.println("Enter the CustomerID of the customer to delete");
-        int customerId = Integer.parseInt(keyboard.nextLine());
+    private static void deleteCustomer(Scanner keyboard, Model model) throws DataAccessException {
+        int customerId = getInt(keyboard,"Enter the CustomerID of the customer to delete", -1);// open  making sure Number is input inside the field instead of words.
         Customer c;
 
         c = model.findCustomerByCustomerID(customerId);
@@ -127,19 +160,12 @@ public class MainApp {
         } else {
             System.out.println("Customer not found");
         }
-        }
-        catch(NumberFormatException e)
-        {
-            System.out.println();// making sure Number is input inside the field instead of words.
-            System.out.println("Number format exception: " + e.getMessage());
-            System.out.println();
-        }
+    
+     
     }
 
-    private static void editCustomer(Scanner kb, Model m) {
-        try{
-        System.out.print("Enter the customerID of the customer to edit:");
-        int customerId = Integer.parseInt(kb.nextLine());
+    private static void editCustomer(Scanner kb, Model m) throws DataAccessException {
+        int customerId = getInt(kb,"Enter the customerID of the customer to edit:", -1);
         Customer c;
 
         c = m.findCustomerByCustomerID(customerId);
@@ -154,44 +180,89 @@ public class MainApp {
         } else {
             System.out.println("Customer not found");
         }
-        }
-        catch(NumberFormatException e)
-        {
-            System.out.println();// making sure Number is input inside the field instead of words.
-            System.out.println("Number format exception: " + e.getMessage());
-            System.out.println();
         
-        }
+        
     }
 
     //different variable from the one in the CustomerTableGateway   
 
-    private static void viewCustomers(Model model) {
-        List<Customer> customers = model.getCustomers();
+    private static void viewCustomers(Model mdl, int order) {
+        List<Customer> customers = mdl.getCustomers();
         System.out.println();
         if (customers.isEmpty()) {
             System.out.println("There are no customers in the database");
-        } else {
-            System.out.printf("%25s %20s %18s %50s %25s %15s %20s\n", "Name", "email", "MobileNumber", " Address ", " DateRegistered ", " CustomerID ", "BranchID:");
-            for (Customer cr : customers) {
-                System.out.printf("%25s %20s %18s %50s %25s %15s %20s\n",
+        } 
+        else {
+            if (order == NAME_ORDER) {
+             Collections.sort(customers);
+            }
+            else if (order == CUSTOMERID_ORDER){
+              Comparator<Customer> cmptr = new CustomerIDComparator();
+              Collections.sort(customers, cmptr);
+                
+            }
+            displayCustomers(customers, mdl);
+            
+                           // The if statement prints out if there are no customer in database, 
+            // The cr is a variable that stores the customers objects inside
+        }
+        System.out.println();
+
+    }
+    
+    private static void displayCustomers(List<Customer> customers, Model mdl){
+        System.out.printf("%25s %35s %25s %50s %25s %18s %20s\n", 
+                "Name", "email", "Mobile Number", " Address ", " Date Registered ", " CustomerID ", "Manager Name:");
+       for (Customer cr : customers){
+           
+        Branch b = mdl.findBranchByBranchID(cr.getBranchID());
+         System.out.printf("%25s %35s %25s %50s %25s %18s %20s\n",
                         cr.getName(),
                         cr.getEmail(),
                         cr.getMobileNumber(),
                         cr.getAddress(),
                         cr.getDateRegistered(),
                         cr.getCustomerID(),
-                        cr.getBranchID());
-
-            }
-                           // The if statement prints out if there are no customer in database, 
-            // The cr is a variable that stores the customers objects inside.
-
-        }
-        System.out.println();
-
+                        (b != null) ? b.getManagerName() : "");
+                  
+                  
+          
+       } 
+        
     }
+    
+        /* VIEWING A SINGLE CUSTOMER FROM TABLE*/
+        private static void viewCustomer(Scanner keyboard, Model model) throws DataAccessException {
+        int customerId = getInt(keyboard,"Enter the CustomerID of the customer you want to view", -1);// open  making sure Number is input inside the field instead of words.
+        Customer c;
 
+        c = model.findCustomerByCustomerID(customerId);
+        System.out.println();
+        if (c != null) {
+             System.out.println();
+             Branch b = model.findBranchByBranchID(c.getBranchID());
+            System.out.println("Name              :" + c.getName());
+            System.out.println("Email             :" + c.getEmail());
+            System.out.println("Mobile Number     :" + c.getMobileNumber());
+            System.out.println("Address           :" + c.getAddress());
+            System.out.println("Date Registered   :" + c.getDateRegistered());
+            System.out.println("Manager Name       :" +((b != null) ? b.getManagerName() : ""));
+        } else {
+            System.out.println("Customer not found");
+        }
+         System.out.println();
+     
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private static Customer readCustomer(Scanner keyb) {
         String name, email, mobileNumber, address, dateRegistered;
         int customerId;
@@ -218,8 +289,8 @@ public class MainApp {
             dateRegistered = getString(keyb, "Enter Date Registered:");
     
          
-            line = getString(keyb, "Enter branch ID:");
-            branchID= Integer.parseInt(line);
+            branchID = getInt(keyb, "Enter branch ID:", -1);
+         
   
 
             //this do while loop will continue to ask user to input something
@@ -249,7 +320,7 @@ public class MainApp {
         mobileNumber = getString(keyb, "Enter Mobile Number" + c.getMobileNumber() + "]:");
         address = getString(keyb, "Enter Address" + c.getAddress() + "]:");
         dateRegistered = getString(keyb, "Enter Date Registered" + c.getDateRegistered() + "]:");
-        line2 = getString(keyb, "Enter Branch ID [" + c.getBranchID() + "]: ");
+        branchID= getInt(keyb, "Enter Branch ID [" + c.getBranchID() + "]: ", 0);
 
         if (name.length() != 0) {
             c.setName(name);
@@ -270,13 +341,12 @@ public class MainApp {
             c.setDateRegistered(dateRegistered);
         }
 
-        if (line2.length() != 0) {
-          branchID = Integer.parseInt(line2);
+        if (branchID != c.getBranchID()) {
             c.setBranchID(branchID );
         }
     }
     
-        private static void createBranch(Scanner keyb, Model mdll) {
+        private static void createBranch(Scanner keyb, Model mdll) throws DataAccessException {
         //keyboard created
         Branch b = readBranch(keyb);
 
@@ -289,10 +359,8 @@ public class MainApp {
         System.out.println();
     }
 
-    private static void deleteBranch(Scanner keyboard, Model model) {
-        try{
-        System.out.println("Enter the BranchID of the branch to delete");
-        int branchID = Integer.parseInt(keyboard.nextLine());
+    private static void deleteBranch(Scanner keyboard, Model model) throws DataAccessException {
+        int branchID = getInt(keyboard,"Enter the BranchID of the branch to delete", -1);
         Branch b;
 
         b = model.findBranchByBranchID(branchID);
@@ -305,21 +373,14 @@ public class MainApp {
         } else {
             System.out.println("Branch not found");
         }
-        }
-       catch(NumberFormatException e)
-       {
-            System.out.println();// making sure Number is input inside the field instead of words.
-            System.out.println("Number format exception: " + e.getMessage());
-            System.out.println();
-       }
+        
+     
         
     }
 
-    private static void editBranch(Scanner kb, Model m) {
-        try{
+    private static void editBranch(Scanner kb, Model m) throws DataAccessException {
+        int branchID = getInt(kb,"Enter the branchID of the branch to edit:", -1);
         System.out.println();  
-        System.out.print("Enter the branchID of the branch to edit:");
-        int branchID = Integer.parseInt(kb.nextLine());
         Branch b;
 
         b = m.findBranchByBranchID(branchID);
@@ -334,14 +395,9 @@ public class MainApp {
         } else {
             System.out.println("Branch not found");
         }
-        }
         
-         catch(NumberFormatException e)
-       {
-            System.out.println();// making sure Number is input inside the field instead of words.
-            System.out.println("Number format exception: " + e.getMessage());
-            System.out.println();
-       }
+        
+      
         
         
     }
@@ -354,9 +410,10 @@ public class MainApp {
         if (branchs.isEmpty()) {
             System.out.println("There are no branchs in the database");
         } else {
-            System.out.printf("%45s %25s %25s %30s\n", "address", "number", "openingHours", " managerName "); 
+            System.out.printf(" %15 %45s %25s %25s %30s\n", " branchID ", "address", "number", "openingHours", " managerName "); 
             for (Branch br : branchs) {
-                System.out.printf("%45s %25s %25s %30s\n",
+                System.out.printf("%15 %45s %25s %25s %30s\n",
+                        br.getBranchID(),
                         br.getAddress(),
                         br.getNumber(),
                         br.getOpeningHours(),
@@ -370,9 +427,46 @@ public class MainApp {
         System.out.println();
 
     }
+    
+    
+    
+    
+       private static void viewBranch(Scanner keyboard, Model model) {
+       int branchID = getInt(keyboard,"Enter the BranchID of the branch to view", -1);
+        Branch b;
+
+        b = model.findBranchByBranchID(branchID); //Search Manager with the specific ID
+        if (b != null) {
+          System.out.println();
+          System.out.println("Address             :" + b.getAddress());
+          System.out.println("Mobile  Number      :" + b.getNumber());
+          System.out.println("Opening Hours       :" + b.getOpeningHours());
+          System.out.println("Manager Name        :" + b.getManagerName());
+        
+          List<Customer> customerList = model.getCustomerByBranchID(b.getBranchID());
+          System.out.println();
+          if (customerList. isEmpty()) {
+              System.out.println("This manager manages no customers");
+          }
+          else {
+               System.out.println("This manager manages the following customers: ");
+               System.out.println();
+              displayCustomers(customerList, model);
+          }
+          System.out.println();
+        } 
+        else {
+            System.out.println("Branch not found");
+        }
+        System.out.println();
+    }
+    
+    
+    
 
     private static Branch readBranch(Scanner keyb) {
         String address, number, openingHours, managerName;
+        int branchID;
    
             // the do while loop prints out the statement repeatedly if there are no input in the frequired fields.
             //if the length of input =0 it qill print out the message again till there's something inserted.
@@ -439,18 +533,35 @@ public class MainApp {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    private static int getInt(Scanner keyb, String prompt, int defaultValue){
+       int opt = defaultValue;
+       boolean finished = false;
+       do {
+           
+           try {
+            System.out.print(prompt); /* user puttin in a letter instead of number*/
+            String line = keyb.nextLine();
+            if(line.length()> 0) {
+            opt = Integer.parseInt(line);
+            }
+              finished = true;/* if int passed in finisehd will be true, and it loops again, but if letter jobs out of loop and prints out the message.*/
+           
+           } 
+           catch(NumberFormatException e){
+               System.out.println("Exception: " + e.getMessage());
+           }
+           
+           
+         }
+         while(!finished);
+        return opt;   /*returning value*/
+    }
+
+ 
     
 }
+   
+    
+    
+    
+

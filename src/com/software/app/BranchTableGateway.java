@@ -139,7 +139,7 @@ public class BranchTableGateway {
         int numRowsAffected;
 
         //the required SQL INSERT statement place holders for the values to be inserted into the database
-        query = " UPDATE " + TABLE_NAME + " SET "
+        query = " UPDATE" + TABLE_NAME + "SET "
                 + COLUMN_ADDRESS    + " = ?, "
                 + COLUMN_NUMBER     + " = ?, "
                 + COLUMN_OPENINGHOURS + " = ?, "

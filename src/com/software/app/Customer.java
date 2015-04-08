@@ -1,7 +1,7 @@
 package com.software.app;
 
 //Customer Class
-public class Customer {
+public class Customer implements Comparable<Customer> {
 
     //declaring the attribute
 
@@ -87,6 +87,13 @@ public class Customer {
     public void setBranchID(int branchID){
         this.branchID = branchID;
     }
-    
-    
-}
+
+    @Override
+    public int compareTo(Customer that) {
+       String myName = this.getName();
+        String yourName = that.getName();
+        
+        
+       return myName.compareTo(yourName);   
+    }
+  }

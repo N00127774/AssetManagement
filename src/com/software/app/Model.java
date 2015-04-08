@@ -11,7 +11,7 @@ public class Model {
 
     private static Model instance = null;
 
-    public static synchronized Model getInstance() {
+    public static synchronized Model getInstance() throws DataAccessException {
         if (instance == null) {
             instance = new Model();
         }
@@ -25,7 +25,7 @@ public class Model {
     BranchTableGateway branchGateway;
 
     // the model class is private so it wont be accessed anywhere else.
-    private Model() {
+    private Model() throws DataAccessException {
         try {
             Connection conn = DBConnection.getInstance();
             this.gateway = new CustomerTableGateway(conn);
@@ -34,13 +34,13 @@ public class Model {
          this.customers = this.gateway.getCustomers();
          this.branches = this.branchGateway.getBranches();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+          throw new DataAccessException("Exception initialisingf Model Object: " + ex.getMessage());
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+          throw new DataAccessException("Exception initialisingf Model Object: " + ex.getMessage());
         }
     }
 
-    public boolean addCustomer(Customer c) {
+    public boolean addCustomer(Customer c) throws DataAccessException {
         boolean result = false;
         try {
             // The gateway returns an id and then the  get method is called to insert value in the parameter.
@@ -53,12 +53,12 @@ public class Model {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                   throw new DataAccessException("Exception adding customer: " + ex.getMessage());
         }
         return result;
     }
 
-    public boolean removeCustomer(Customer c) {
+    public boolean removeCustomer(Customer c) throws DataAccessException {
         boolean removed = false;
 
         try {
@@ -68,13 +68,23 @@ public class Model {
                 removed = this.customers.remove(c);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                     throw new DataAccessException("Exception removing customer: " + ex.getMessage());
         }
         return removed;
     }
 
     public List<Customer> getCustomers() {
         return this.customers;
+    }
+    
+    public List<Customer> getCustomerByBranchID(int branchID){
+     List<Customer> list = new ArrayList<Customer>();
+     for (Customer c : this.customers) {
+         if (c.getBranchID() == branchID){
+             list.add(c);
+         } 
+      }
+        return list;
     }
 
     Customer findCustomerByCustomerID(int customerId) {
@@ -96,13 +106,13 @@ public class Model {
         return c;
     }
 
-    boolean updateCustomer(Customer c) {
+    boolean updateCustomer(Customer c) throws DataAccessException {
         boolean updated = false;
 
         try {
             updated = this.gateway.updateCustomer(c);
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                    throw new DataAccessException("Exception updating customer: " + ex.getMessage());
         }
 
         return updated;
@@ -110,7 +120,7 @@ public class Model {
 
 
 
-   public boolean addBranch(Branch b) {
+   public boolean addBranch(Branch b) throws DataAccessException {
         boolean result = false;
         try {                                   
             // The gateway returns an id and then the  get method is called to insert value in the parameter.
@@ -123,13 +133,13 @@ public class Model {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                     throw new DataAccessException("Exception adding Branch: " + ex.getMessage());
         }
         return result;
     }
 
    
-      public boolean removeBranch(Branch b) {
+      public boolean removeBranch(Branch b) throws DataAccessException {
         boolean removed = false;
 
         try {
@@ -139,7 +149,7 @@ public class Model {
                 removed = this.branches.remove(b);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+          throw new DataAccessException("Exception removing branch: " + ex.getMessage());
         }
         return removed;
     }
@@ -170,13 +180,13 @@ public class Model {
     }
        
        
-        boolean updateBranch(Branch b) {
+        boolean updateBranch(Branch b) throws DataAccessException {
         boolean updated = false;
 
         try {
             updated = this.branchGateway.updateBranch(b);
         } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                     throw new DataAccessException("Exception updating branch: " + ex.getMessage());
         }
 
         return updated;
