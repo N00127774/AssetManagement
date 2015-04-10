@@ -102,7 +102,7 @@ public class BranchTableGateway {
         // created for each row in the result of the query
         // the id of a branch
         int branchID;
-        String address , number, openingHours, managerName;
+        String address, number, openingHours, managerName;
       
         Branch b;       // a Branch object created from a row in the result of
         // the query
@@ -121,7 +121,7 @@ public class BranchTableGateway {
             
             branchID = rs.getInt(COLUMN_BRANCHID);
             address = rs.getString(COLUMN_ADDRESS);
-            number= rs.getString(COLUMN_NUMBER);
+            number = rs.getString(COLUMN_NUMBER);
             openingHours = rs.getString(COLUMN_OPENINGHOURS);
             managerName =  rs.getString(COLUMN_MANAGERNAME);
           
@@ -139,7 +139,7 @@ public class BranchTableGateway {
         int numRowsAffected;
 
         //the required SQL INSERT statement place holders for the values to be inserted into the database
-        query = " UPDATE" + TABLE_NAME + "SET "
+        query = " UPDATE " + TABLE_NAME + " SET "
                 + COLUMN_ADDRESS    + " = ?, "
                 + COLUMN_NUMBER     + " = ?, "
                 + COLUMN_OPENINGHOURS + " = ?, "

@@ -13,12 +13,18 @@ public class MainApp {
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
         Model model;
+        String option = null;
         int opt = 12;
-
+     System.out.println(" Welcome Choose one of the following options:");
         do {
             try{
              model = Model.getInstance();
             // Different Options(Menu)Building up the Menu interface
+            
+                System.out.println();
+                System.out.println();
+                System.out.println("Customer Table");
+                System.out.println();
                 System.out.println(" 1. Create new Customer");
                 System.out.println(" 2. Delete existing Customers");
                 System.out.println(" 3. Edit existing Customers");
@@ -26,15 +32,18 @@ public class MainApp {
                 System.out.println(" 5. View all Customers by Customer Id");
                 System.out.println(" 6. View single Customer");
                 System.out.println();
+                System.out.println();
+         
+                System.out.println("Branch Table");
+                System.out.println();
                 System.out.println(" 7. Create new Branch");
-                System.out.println();
                 System.out.println(" 8. Delete existing Branch");
-                System.out.println();
                 System.out.println(" 9. Edit existing Branch");
-                System.out.println();
                 System.out.println(" 10. View all Branches");
                 System.out.println(" 11. View single Branch");
                 System.out.println();
+                System.out.println();
+                System.out.println("___________");
                 System.out.println(" 12. Exit");
                 System.out.println();
 
@@ -43,6 +52,8 @@ public class MainApp {
                 opt = getInt(keyboard, "Enter option: " , 12);
                 System.out.println();
                 System.out.println("You chose option " + opt);
+                System.out.println();
+                System.out.println();
 
             // The swtich statement= If statement.the follwing cases, print out different
                 //statements, depending on the number you input in.
@@ -138,9 +149,13 @@ public class MainApp {
 
         // if statement for if the customr as been added or not
         if (mdll.addCustomer(c)) {
+            System.out.println();
             System.out.println("Customer added to database.");
+            System.out.println();
         } else {
+            System.out.println();
             System.out.println("Customer not added to database.");
+            System.out.println();
         }
         System.out.println();
     }
@@ -152,13 +167,18 @@ public class MainApp {
         c = model.findCustomerByCustomerID(customerId);
         if (c != null) {
             if (model.removeCustomer(c)) {
-                  System.out.println();
+                System.out.println();
                 System.out.println("Customer deleted");
+                System.out.println();
             } else {
+                System.out.println();
                 System.out.println("Customer not deleted");
+                System.out.println();
             }
         } else {
+            System.out.println();
             System.out.println("Customer not found");
+            System.out.println();
         }
     
      
@@ -172,13 +192,19 @@ public class MainApp {
         if (c != null) {
             editCustomerDetails(kb, c);
             if (m.updateCustomer(c)) {
+                System.out.println();
                 System.out.println("Customer updated");
+                System.out.println();
 
             } else {
+                System.out.println();
                 System.out.println("Customer not updated");
+                System.out.println();
             }
         } else {
+            System.out.println();
             System.out.println("Customer not found");
+            System.out.println();
         }
         
         
@@ -190,6 +216,7 @@ public class MainApp {
         List<Customer> customers = mdl.getCustomers();
         System.out.println();
         if (customers.isEmpty()) {
+            System.out.println();
             System.out.println("There are no customers in the database");
         } 
         else {
@@ -233,7 +260,9 @@ public class MainApp {
     
         /* VIEWING A SINGLE CUSTOMER FROM TABLE*/
         private static void viewCustomer(Scanner keyboard, Model model) throws DataAccessException {
+        System.out.println();
         int customerId = getInt(keyboard,"Enter the CustomerID of the customer you want to view", -1);// open  making sure Number is input inside the field instead of words.
+        System.out.println();
         Customer c;
 
         c = model.findCustomerByCustomerID(customerId);
@@ -352,9 +381,13 @@ public class MainApp {
 
         // if statement for if the customr as been added or not
         if (mdll.addBranch(b)) {
+            System.out.println();
             System.out.println("Branch added to database.");
+            System.out.println();
         } else {
+            System.out.println();
             System.out.println("Branch not added to database.");
+            System.out.println();
         }
         System.out.println();
     }
@@ -366,12 +399,18 @@ public class MainApp {
         b = model.findBranchByBranchID(branchID);
         if (b != null) {
             if (model.removeBranch(b)) {
+                System.out.println();
                 System.out.println("Branch deleted");
+                System.out.println();
             } else {
+                System.out.println();
                 System.out.println("Branch not deleted");
+                System.out.println();
             }
         } else {
+            System.out.println();
             System.out.println("Branch not found");
+            System.out.println();
         }
         
      
@@ -387,13 +426,17 @@ public class MainApp {
         if (b != null) {
             editBranchDetails(kb, b);
             if (m.updateBranch(b)) {
+                System.out.println();
                 System.out.println("Branch updated");
+                System.out.println();
 
             } else {
+                System.out.println();
                 System.out.println("Branch not updated");
             }
         } else {
             System.out.println("Branch not found");
+            System.out.println();
         }
         
         
@@ -405,25 +448,25 @@ public class MainApp {
     //different variable from the one in the BranchTableGateway   
 
     private static void viewBranchs(Model model) {
-        List<Branch> branchs = model.getBranches();
+        List<Branch> branches = model.getBranches();
         System.out.println();
-        if (branchs.isEmpty()) {
-            System.out.println("There are no branchs in the database");
-        } else {
-            System.out.printf(" %15 %45s %25s %25s %30s\n", " branchID ", "address", "number", "openingHours", " managerName "); 
-            for (Branch br : branchs) {
-                System.out.printf("%15 %45s %25s %25s %30s\n",
+    
+            System.out.printf("%15s %45s %25s %25s %30s\n", " branchID ", " address", " number ", " openingHours ", " managerName "); 
+            for (Branch br : branches) {
+                System.out.println();
+                System.out.printf("%15d %45s %25s %25s %30s\n",
                         br.getBranchID(),
                         br.getAddress(),
                         br.getNumber(),
                         br.getOpeningHours(),
-                        br.getManagerName());
+                        br.getManagerName()
+                );
                        
             }
                            // The if statement prints out if there are no branch in database, 
             // The cr is a variable that stores the branchs objects inside.
 
-        }
+        
         System.out.println();
 
     }
@@ -442,15 +485,18 @@ public class MainApp {
           System.out.println("Mobile  Number      :" + b.getNumber());
           System.out.println("Opening Hours       :" + b.getOpeningHours());
           System.out.println("Manager Name        :" + b.getManagerName());
+          System.out.println();
         
           List<Customer> customerList = model.getCustomerByBranchID(b.getBranchID());
           System.out.println();
           if (customerList. isEmpty()) {
+              System.out.println();
               System.out.println("This manager manages no customers");
           }
           else {
-               System.out.println("This manager manages the following customers: ");
-               System.out.println();
+              System.out.println();
+              System.out.println("This manager manages the following customers: ");
+              System.out.println();
               displayCustomers(customerList, model);
           }
           System.out.println();
